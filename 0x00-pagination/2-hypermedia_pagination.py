@@ -60,13 +60,13 @@ class Server:
 
         page_data = self.get_page(page, page_size)
         data = {
-                'page_size': len(page_data),
-                'page': page,
-                'data': page_data,
-                'next_page': next_page,
-                'prev_page': prev_page,
-                'total_page': math.ceil(len(self.__dataset) / page_size)
-                }
+            'page_size': len(page_data),
+            'page': page,
+            'data': page_data,
+            'next_page': next_page,
+            'prev_page': prev_page,
+            'total_page': math.ceil(len(self.__dataset) / page_size)
+        }
         return data
 
 if __name__ == "__main__":
