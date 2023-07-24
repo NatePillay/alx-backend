@@ -42,27 +42,19 @@ class Server:
     def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict:
         """Documentation string here
         """
-        if index is not None:
-            old_index = index
-        try:
-            assert index in self.__indexed_dataset.keys()
-        except AssertionError:
-            while index not in self.__indexed_dataset.keys():
-                if index > max(self.__indexed_dataset.keys()):
-                    raise
-                index += 1
-        except TypeError:
-            raise AssertionError
-
+        assert type(index) == int and type(page_size) == int
+        assert 0 <= index < len(self.indexed_dataset())
+        data = []
         next_index = index + page_size
-        page_data = [
-            self.__indexed_dataset[i] for i in range(index, next_index)
-        ]
-        data = {
-            'index': old_index,
-            'data': page_data,
-            'page_size': page_size,
-            'next_index': next_index,
+        for i in range(index, next_index):
+            if self.indexed_dataset().get(i):
+                data.append(self.indexed_dataset()[i])
+            else:
+                i += 1
+                next_index += 1
+        return {
+            "data": data,
+            "index": index,
+            "next_index": next_index,
+            "page_size": page_size
         }
-
-        return data
