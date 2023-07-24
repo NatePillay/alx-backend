@@ -2,7 +2,7 @@
 """ A module that the data from a csv file """
 import csv
 import math
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Any
 
 
 def index_range(page: int, page_size: int) -> Tuple:
