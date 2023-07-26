@@ -14,7 +14,7 @@ class LFUCache(BaseCaching):
         """ Initiliaze
         """
         super().__init__()
-        self.cache_data = OrderedDict()
+        self.count = {}
 
     def put(self, key, item):
         """assign to the {} self.cache_data the item value for the key
