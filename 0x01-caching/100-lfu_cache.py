@@ -21,16 +21,37 @@ class MRUCache(BaseCaching):
         """
         if key and item:
             if len(self.cache_data) < BaseCaching.MAX_ITEMS:
-                self.cache_data[key] = item
+                orderkeys = self.cache_data.keys()
+                ordercount = self.count.keys()
+                if key in self.cache_data:
+                    self.cache_data[key] = item
+                    self.count[key] += 1
+                else:
+                    self.cache_data[key] = item
+                    self.count[key] = 1
+                tkeys = [(key, self.cache_data[key]) for key in orderkeys]
+                self.cache_data = OrderedDict(tkeys)
+                tcount = [(key, self.count[key]) for key in ordercount]
+                self.count = OrderedDict(tcount)
+
             else:
-                mru_key = next(iter(reversed(self.cache_data)))
-                print("DISCARD:", mru_key)
-                self.cache_data.pop(mru_key)
-            self.cache_data[key] = item   
+                if key not in self.cache_data:
+                    minkey = min(self.count, key=self.count.get)
+                    del self.cache_data[minkey]
+                    print("DISCARD: {}".format(minkey))
+                    del self.count[minkey]
+                    self.cache_data[key] = item
+                    self.count[key] = 1
+                else:
+                    self.cache_data[key] = item
+                    self.count[key] += 1 
 
     def get(self, key):
         """return value in self.cache_data linked to key
         """
-        if not key or not self.cache_data.get(key):
+        if key is None or key not in self.cache_data:
             return None
-        return self.cache_data.get(key)
+        self.cache_data.move_to_end(key, last=True)
+        self.count[key] += 1
+        self.cache_data.move_to_end(key, last=True)
+        return self.cache_data[key]
