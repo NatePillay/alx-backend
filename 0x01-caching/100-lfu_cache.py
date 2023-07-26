@@ -1,12 +1,12 @@
 #!/usr/bin/python3
-""" MRUCache that inherits from BaseCaching and is a caching system"""
+""" LFUCache that inherits from BaseCaching and is a caching system"""
 
 from collections import OrderedDict
 BaseCaching = __import__('base_caching').BaseCaching
 
 
-class MRUCache(BaseCaching):
-    """ MRUCache defines:
+class LFUCache(BaseCaching):
+    """ LFUCache defines:
       - inherits from BaseCaching and is a caching system
       - where your data are stored (in a dictionary)
     """
